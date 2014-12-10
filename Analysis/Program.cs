@@ -91,8 +91,6 @@ namespace Analysis
         private static IEnumerable<string> GetAssemblies()
         {
             return Directory.EnumerateFiles(@"c:\Windows\Microsoft.NET\Framework\v4.0.30319\", "*.dll");
-
-            // yield return @"C:\Users\a.nikitin\Documents\Projects\temp\DelegateCacheTest\DelegateCacheTest\bin\Release\DelegateCacheTest.exe";
         }
 
         private static bool IsEmpty(MethodDefinition methodDefinition)
