@@ -13,8 +13,10 @@ namespace Analysis
     {
         public static void Main(string[] args)
         {
+            var folderPath = @"c:\Windows\Microsoft.NET\Framework\v4.0.30319\";
+
             int i = 0;
-            foreach (var dll in GetAssemblies())
+            foreach (var dll in GetAssemblies(folderPath))
             {
                 ModuleDefinition module;
                 if (!TryGetModule(dll, out module))
@@ -88,9 +90,9 @@ namespace Analysis
             Console.WriteLine("Total items found: {0}", i);
         }
 
-        private static IEnumerable<string> GetAssemblies()
+        private static IEnumerable<string> GetAssemblies(string folderPath)
         {
-            return Directory.EnumerateFiles(@"c:\Windows\Microsoft.NET\Framework\v4.0.30319\", "*.dll");
+            return Directory.EnumerateFiles(folderPath, "*.dll");
         }
 
         private static bool IsAlwaysTrue(MethodDefinition methodDefinition)
