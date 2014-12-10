@@ -22,30 +22,30 @@ namespace Analysis
                     continue;
                 }
 
-                foreach (var type in module.GetTypes())
+                foreach (var currentType in module.GetTypes())
                 {
-                    foreach (var methodDefinition in type.GetMethods())
+                    foreach (var currentMethod in currentType.GetMethods())
                     {
-                        if (methodDefinition.HasBody)
+                        if (currentMethod.HasBody)
                         {
-                            foreach (var instruction in methodDefinition.Body.Instructions)
+                            foreach (var currentInstruction in currentMethod.Body.Instructions)
                             {
-                                if (instruction.OpCode != OpCodes.Ldftn)
+                                if (currentInstruction.OpCode != OpCodes.Ldftn)
                                 {
                                     continue;
                                 }
 
-                                var nextInstruction = instruction.Next;
+                                var nextInstruction = currentInstruction.Next;
                                 if (nextInstruction.OpCode != OpCodes.Newobj)
                                 {
                                     continue;
                                 }
 
-                                var operand = (MethodReference)nextInstruction.Operand;
+                                var possibleDelegateCtr = (MethodReference)nextInstruction.Operand;
                                 var isConstructor = false;
                                 try
                                 {
-                                    isConstructor = operand.Resolve().IsConstructor;
+                                    isConstructor = possibleDelegateCtr.Resolve().IsConstructor;
                                 }
                                 catch
                                 {
@@ -57,12 +57,11 @@ namespace Analysis
                                     continue;
                                 }
 
-                                var methodReference = (MethodReference)instruction.Operand;
-                                var method = methodReference.Resolve();
+                                var methodPointer = ((MethodReference)currentInstruction.Operand).Resolve();
 
-                                if (IsEmpty(method) /*|| IsIdentity(method)*/)
+                                if (IsEmpty(methodPointer) /*|| IsIdentity(method)*/)
                                 {
-                                    Console.WriteLine(instruction);
+                                    Console.WriteLine(currentInstruction);
                                     Console.WriteLine(nextInstruction);
 
                                     i++;
