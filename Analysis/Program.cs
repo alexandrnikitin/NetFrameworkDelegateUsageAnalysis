@@ -93,20 +93,23 @@ namespace Analysis
             return Directory.EnumerateFiles(@"c:\Windows\Microsoft.NET\Framework\v4.0.30319\", "*.dll");
         }
 
-        private static bool IsEmpty(MethodDefinition methodDefinition)
+        private static bool IsAlwaysTrue(MethodDefinition methodDefinition)
         {
-            if (methodDefinition.HasBody && methodDefinition.Body.Instructions.Count == 1)
+            if (!methodDefinition.HasBody)
             {
-                if (methodDefinition.Body.Instructions.Single().OpCode == OpCodes.Ret)
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldc_I4_1 ||
+                methodDefinition.Body.Instructions[1].OpCode != OpCodes.Ret)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        private static bool IsIdentity(MethodDefinition methodDefinition)
+        private static bool IsCast(MethodDefinition methodDefinition)
         {
             if (!methodDefinition.HasBody)
             {
@@ -114,7 +117,9 @@ namespace Analysis
             }
 
             if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldarg_0 ||
-                methodDefinition.Body.Instructions[1].OpCode != OpCodes.Ret)
+                methodDefinition.Body.Instructions[1].OpCode != OpCodes.Box ||
+                methodDefinition.Body.Instructions[2].OpCode != OpCodes.Unbox_Any ||
+                methodDefinition.Body.Instructions[3].OpCode != OpCodes.Ret)
             {
                 return false;
             }
@@ -142,7 +147,20 @@ namespace Analysis
             return true;
         }
 
-        private static bool IsCast(MethodDefinition methodDefinition)
+        private static bool IsEmpty(MethodDefinition methodDefinition)
+        {
+            if (methodDefinition.HasBody && methodDefinition.Body.Instructions.Count == 1)
+            {
+                if (methodDefinition.Body.Instructions.Single().OpCode == OpCodes.Ret)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsIdentity(MethodDefinition methodDefinition)
         {
             if (!methodDefinition.HasBody)
             {
@@ -150,24 +168,6 @@ namespace Analysis
             }
 
             if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldarg_0 ||
-                methodDefinition.Body.Instructions[1].OpCode != OpCodes.Box ||
-                methodDefinition.Body.Instructions[2].OpCode != OpCodes.Unbox_Any ||
-                methodDefinition.Body.Instructions[3].OpCode != OpCodes.Ret)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool IsAlwaysTrue(MethodDefinition methodDefinition)
-        {
-            if (!methodDefinition.HasBody)
-            {
-                return false;
-            }
-
-            if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldc_I4_1 ||
                 methodDefinition.Body.Instructions[1].OpCode != OpCodes.Ret)
             {
                 return false;
