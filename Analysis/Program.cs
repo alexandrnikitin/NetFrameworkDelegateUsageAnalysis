@@ -60,11 +60,11 @@ namespace Analysis
                                 var methodPointer = ((MethodReference)currentInstruction.Operand).Resolve();
 
                                 if (
-                                    /*IsEmpty(methodPointer) || */
-                                    /*IsIdentity(methodPointer) ||*/
-                                    /*IsAlwaysTrue(methodPointer) || */
-                                    /*IsCompatible(methodPointer) || */
-                                    IsCast(methodPointer)
+                                    IsEmpty(methodPointer)/* || 
+                                    IsIdentity(methodPointer) ||
+                                    IsAlwaysTrue(methodPointer) || 
+                                    IsCompatible(methodPointer) || 
+                                    IsCast(methodPointer)*/
                                     )
                                 {
                                     i++;
