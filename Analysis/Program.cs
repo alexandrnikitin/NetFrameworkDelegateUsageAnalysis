@@ -59,7 +59,10 @@ namespace Analysis
 
                                 var methodPointer = ((MethodReference)currentInstruction.Operand).Resolve();
 
-                                if (/*IsEmpty(methodPointer) || */IsIdentity(methodPointer))
+                                if (
+                                    /*IsEmpty(methodPointer) || */
+                                    /*IsIdentity(methodPointer) ||*/
+                                    IsAlwaysTrue(methodPointer))
                                 {
                                     i++;
 
@@ -110,6 +113,22 @@ namespace Analysis
             }
 
             if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldarg_0 ||
+                methodDefinition.Body.Instructions[1].OpCode != OpCodes.Ret)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsAlwaysTrue(MethodDefinition methodDefinition)
+        {
+            if (!methodDefinition.HasBody)
+            {
+                return false;
+            }
+
+            if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldc_I4_1 ||
                 methodDefinition.Body.Instructions[1].OpCode != OpCodes.Ret)
             {
                 return false;
