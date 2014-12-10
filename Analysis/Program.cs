@@ -59,18 +59,19 @@ namespace Analysis
 
                                 var methodPointer = ((MethodReference)currentInstruction.Operand).Resolve();
 
-                                if (IsEmpty(methodPointer) /*|| IsIdentity(method)*/)
+                                if (/*IsEmpty(methodPointer) || */IsIdentity(methodPointer))
                                 {
+                                    i++;
+
                                     Console.WriteLine("--------------------------------------------------------");
-                                    Console.WriteLine("Fount item #{0}", i);
-                                    Console.WriteLine("Type: {0}", currentType);
-                                    Console.WriteLine("Method: {0}", currentMethod.Name);
+                                    Console.WriteLine("Item #{0}", i);
+                                    Console.WriteLine("Type name: {0}", currentType);
+                                    Console.WriteLine("Method full name: {0}", currentMethod.FullName);
+                                    Console.WriteLine("Instructions:");
                                     Console.WriteLine(currentInstruction);
                                     Console.WriteLine(nextInstruction);
                                     Console.WriteLine();
                                     Console.WriteLine();
-
-                                    i++;
                                 }
                             }
                         }
