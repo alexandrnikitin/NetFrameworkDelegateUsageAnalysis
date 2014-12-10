@@ -61,8 +61,14 @@ namespace Analysis
 
                                 if (IsEmpty(methodPointer) /*|| IsIdentity(method)*/)
                                 {
+                                    Console.WriteLine("--------------------------------------------------------");
+                                    Console.WriteLine("Fount item #{0}", i);
+                                    Console.WriteLine("Type: {0}", currentType);
+                                    Console.WriteLine("Method: {0}", currentMethod.Name);
                                     Console.WriteLine(currentInstruction);
                                     Console.WriteLine(nextInstruction);
+                                    Console.WriteLine();
+                                    Console.WriteLine();
 
                                     i++;
                                 }
@@ -72,7 +78,7 @@ namespace Analysis
                 }
             }
 
-            Console.WriteLine(i);
+            Console.WriteLine("Total items found: {0}", i);
         }
 
         private static IEnumerable<string> GetAssemblies()
