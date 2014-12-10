@@ -116,6 +116,7 @@ namespace Analysis
                 return false;
             }
 
+            // todo quite straightforward check, find other ways
             if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldarg_0 ||
                 methodDefinition.Body.Instructions[1].OpCode != OpCodes.Box ||
                 methodDefinition.Body.Instructions[2].OpCode != OpCodes.Unbox_Any ||
@@ -134,6 +135,7 @@ namespace Analysis
                 return false;
             }
 
+            // todo quite straightforward check, find other ways
             if (methodDefinition.Body.Instructions[0].OpCode != OpCodes.Ldarg_0 ||
                 methodDefinition.Body.Instructions[1].OpCode != OpCodes.Box ||
                 methodDefinition.Body.Instructions[2].OpCode != OpCodes.Isinst ||
